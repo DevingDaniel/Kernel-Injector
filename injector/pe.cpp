@@ -1,5 +1,6 @@
 #include "pe.h"
 #include <windows.h>
+#include <psapi.h>
 #include <winternl.h>
 #include <iostream>
 
@@ -158,29 +159,24 @@ namespace PE {
     }
 
     uintptr_t GetModuleBase(const char* ModuleName) {
-        PPEB Peb = NtCurrentPeb();
-        PPEB_LDR_DATA Ldr = Peb->Ldr;
-        PLIST_ENTRY ListHead = &Ldr->InMemoryOrderModuleList;
-        PLIST_ENTRY ListEntry = ListHead->Flink;
+        HMODULE Modules[1024];
+        DWORD Needed = 0;
+        if (!EnumProcessModules(GetCurrentProcess(), Modules, sizeof(Modules), &Needed)) {
+            return 0;
+        }
 
-        while (ListEntry != ListHead) {
-            PLDR_DATA_TABLE_ENTRY Entry = CONTAINING_RECORD(ListEntry, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
-            char* Name = (char*)Entry->BaseDllName.Buffer;
-            int Len = Entry->BaseDllName.Length / sizeof(WCHAR);
+        std::string Target(ModuleName);
+        for (char& c : Target) c = (char)tolower(c);
 
-            std::string ModuleNameA;
-            for (int i = 0; i < Len; i++) {
-                ModuleNameA += (char)tolower(Name[i * 2]);
+        for (DWORD i = 0; i < Needed / sizeof(HMODULE); i++) {
+            char Name[MAX_PATH];
+            if (GetModuleBaseNameA(GetCurrentProcess(), Modules[i], Name, MAX_PATH)) {
+                std::string ModuleNameA(Name);
+                for (char& c : ModuleNameA) c = (char)tolower(c);
+                if (ModuleNameA == Target) {
+                    return (uintptr_t)Modules[i];
+                }
             }
-
-            std::string Target(ModuleName);
-            for (char& c : Target) c = (char)tolower(c);
-
-            if (ModuleNameA == Target) {
-                return (uintptr_t)Entry->DllBase;
-            }
-
-            ListEntry = ListEntry->Flink;
         }
 
         return 0;
