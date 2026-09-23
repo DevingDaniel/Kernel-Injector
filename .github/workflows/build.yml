@@ -12,14 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Download and install WDK
+      - name: Download WDK installer
         shell: cmd
         run: |
           echo Downloading WDK...
-          curl -L -o wdksetup.exe "https://download.microsoft.com/download/1/2/3/12345678-1234-1234-1234-123456789012/wdksetup.exe"
-          echo Installing WDK...
-          wdksetup.exe /quiet /norestart
-          echo WDK install completed with exit code: %ERRORLEVEL%
+          curl -L -o wdksetup.exe "https://download.microsoft.com/download/5/8/7/587B9B7F-8C4E-4F3E-9B3D-7E6F8C9D0E1F/wdksetup.exe"
+          dir wdksetup.exe
+      
+      - name: Install WDK
+        shell: cmd
+        run: wdksetup.exe /quiet /norestart
       
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
