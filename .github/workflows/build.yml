@@ -12,11 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install WDK
+      - name: Install WDK via Chocolatey
         shell: cmd
-        run: |
-          curl -L -o wdksetup.exe https://go.microsoft.com/fwlink/?linkid=2196227
-          wdksetup.exe /quiet /norestart
+        run: choco install windows-driver-kit --version 10.0.22621.0 -y --no-progress
       
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
