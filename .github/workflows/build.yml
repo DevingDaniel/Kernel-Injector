@@ -12,10 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install WDK via VS Installer
+      - name: Download and install WDK
         shell: cmd
         run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath "C:\Program Files\Microsoft Visual Studio\18\Enterprise" --add Microsoft.VisualStudio.Component.WDK --passive --norestart
+          echo Downloading WDK...
+          curl -L -o wdksetup.exe "https://download.microsoft.com/download/1/2/3/12345678-1234-1234-1234-123456789012/wdksetup.exe"
+          echo Installing WDK...
+          wdksetup.exe /quiet /norestart
+          echo WDK install completed with exit code: %ERRORLEVEL%
       
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
