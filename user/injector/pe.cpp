@@ -1,7 +1,6 @@
 #include "pe.h"
 #include <windows.h>
 #include <psapi.h>
-#include <winternl.h>
 #include <iostream>
 
 namespace PE {
@@ -20,12 +19,10 @@ namespace PE {
     bool Parse(const std::vector<uint8_t>& FileData, std::vector<uint8_t>& ImageData, uintptr_t& ImageBase) {
         PIMAGE_NT_HEADERS64 Nt = GetNtHeaders(FileData.data());
         if (Nt == NULL || Nt->Signature != IMAGE_NT_SIGNATURE) {
-            std::cerr << "[!] Invalid PE signature\n";
             return false;
         }
 
         if (Nt->FileHeader.Machine != IMAGE_FILE_MACHINE_AMD64) {
-            std::cerr << "[!] Not a x64 binary\n";
             return false;
         }
 
@@ -50,8 +47,6 @@ namespace PE {
             memcpy(Dest, Src, Sections[i].SizeOfRawData);
         }
 
-        std::cout << "[+] PE parsed: " << Nt->FileHeader.NumberOfSections << " sections, ImageSize: 0x"
-                  << std::hex << ImageSize << "\n";
         return true;
     }
 
@@ -72,7 +67,6 @@ namespace PE {
 
         PIMAGE_DATA_DIRECTORY RelocDir = &Nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
         if (RelocDir->VirtualAddress == 0 || RelocDir->Size == 0) {
-            std::cout << "[-] No relocations found\n";
             return true;
         }
 
@@ -101,7 +95,6 @@ namespace PE {
             RelocSize -= Reloc->SizeOfBlock;
         }
 
-        std::cout << "[+] Relocations applied (delta: 0x" << std::hex << Delta << ")\n";
         return true;
     }
 
@@ -113,7 +106,6 @@ namespace PE {
 
         PIMAGE_DATA_DIRECTORY ImportDir = &Nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
         if (ImportDir->VirtualAddress == 0 || ImportDir->Size == 0) {
-            std::cout << "[-] No imports found\n";
             return true;
         }
 
@@ -123,7 +115,6 @@ namespace PE {
             const char* DllName = (const char*)(ImageData.data() + ImportDesc->Name);
             uintptr_t ModuleBase = GetModuleBase(DllName);
             if (ModuleBase == 0) {
-                std::cerr << "[!] Failed to load module: " << DllName << "\n";
                 ImportDesc++;
                 continue;
             }
@@ -143,10 +134,6 @@ namespace PE {
                     FuncAddr = GetProcAddress(ModuleBase, (const char*)ImportByName->Name);
                 }
 
-                if (FuncAddr == 0) {
-                    std::cerr << "[!] Failed to resolve import: " << DllName << "\n";
-                }
-
                 IAT[Index] = FuncAddr;
                 Index++;
             }
@@ -154,7 +141,6 @@ namespace PE {
             ImportDesc++;
         }
 
-        std::cout << "[+] Imports resolved\n";
         return true;
     }
 

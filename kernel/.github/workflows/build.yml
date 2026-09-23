@@ -1,0 +1,17 @@
+name: Build Kernel Driver
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Note
+        shell: cmd
+        run: echo Kernel driver build requires WDK - not configured in this workflow

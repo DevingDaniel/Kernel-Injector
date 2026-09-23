@@ -1,4 +1,4 @@
-name: Build
+name: Build User Injector
 
 on:
   push:
@@ -15,22 +15,22 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
       
-      - name: Build user injector
+      - name: Build GUI Injector
         shell: cmd
         run: msbuild user\injector\PhantomInjector.vcxproj /m /p:Configuration=Release /p:Platform=x64
       
-      - name: Build user payload
+      - name: Build Cheat DLL
         shell: cmd
-        run: msbuild user\payload\PhantomClient.vcxproj /m /p:Configuration=Release /p:Platform=x64
+        run: msbuild user\cheat\PhantomCheat.vcxproj /m /p:Configuration=Release /p:Platform=x64
       
       - name: Upload injector binary
         uses: actions/upload-artifact@v4
         with:
           name: PhantomInjector
-          path: user/injector/x64/Release/PhantomInjector.exe
+          path: user/bin/Release/PhantomInjector.exe
       
-      - name: Upload client binary
+      - name: Upload cheat DLL
         uses: actions/upload-artifact@v4
         with:
-          name: PhantomClient
-          path: user/payload/x64/Release/PhantomClient.dll
+          name: PhantomCheat
+          path: user/bin/Release/PhantomCheat.dll
