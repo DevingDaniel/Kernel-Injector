@@ -4,7 +4,7 @@
 #include <tlhelp32.h>
 #include <vector>
 #include <string>
-#include "shared\protocol.h"
+#include "..\shared\protocol.h"
 
 class PhantomInjector {
 public:

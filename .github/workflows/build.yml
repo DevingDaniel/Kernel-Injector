@@ -8,9 +8,15 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Install WDK
+        shell: cmd
+        run: |
+          curl -L -o wdksetup.exe https://go.microsoft.com/fwlink/?linkid=2196227
+          wdksetup.exe /quiet /norestart
       
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
