@@ -71,6 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="injector.h" />
