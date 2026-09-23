@@ -15,22 +15,22 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
       
-      - name: Build injector
+      - name: Build user injector
         shell: cmd
-        run: msbuild injector\PhantomInjector.vcxproj /m /p:Configuration=Release /p:Platform=x64
+        run: msbuild user\injector\PhantomInjector.vcxproj /m /p:Configuration=Release /p:Platform=x64
       
-      - name: Build client
+      - name: Build user payload
         shell: cmd
-        run: msbuild client\PhantomClient.vcxproj /m /p:Configuration=Release /p:Platform=x64
+        run: msbuild user\payload\PhantomClient.vcxproj /m /p:Configuration=Release /p:Platform=x64
       
       - name: Upload injector binary
         uses: actions/upload-artifact@v4
         with:
           name: PhantomInjector
-          path: injector/x64/Release/PhantomInjector.exe
+          path: user/injector/x64/Release/PhantomInjector.exe
       
       - name: Upload client binary
         uses: actions/upload-artifact@v4
         with:
           name: PhantomClient
-          path: client/x64/Release/PhantomClient.dll
+          path: user/payload/x64/Release/PhantomClient.dll

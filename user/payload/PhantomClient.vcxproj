@@ -13,23 +13,24 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{A1B2C3D4-1234-5678-9ABC-DEF012345678}</ProjectGuid>
-    <RootNamespace>PhantomInjector</RootNamespace>
+    <ProjectGuid>{B2C3D4E5-2345-6789-0BCD-EF0123456789}</ProjectGuid>
+    <RootNamespace>PhantomClient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <OutputDirectory>$(SolutionDir)bin\$(Configuration)\</OutputDirectory>
-    <IntermediateDirectory>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</IntermediateDirectory>
-    <TargetName>PhantomInjector</TargetName>
-    <TargetExt>.exe</TargetExt>
+    <OutputDirectory>..\bin\$(Configuration)\</OutputDirectory>
+    <IntermediateDirectory>..\bin\$(Configuration)\$(ProjectName)\</IntermediateDirectory>
+    <TargetName>PhantomClient</TargetName>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <OutputDirectory>$(SolutionDir)bin\$(Configuration)\</OutputDirectory>
-    <IntermediateDirectory>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</IntermediateDirectory>
-    <TargetName>PhantomInjector</TargetName>
-    <TargetExt>.exe</TargetExt>
+    <OutputDirectory>..\bin\$(Configuration)\</OutputDirectory>
+    <IntermediateDirectory>..\bin\$(Configuration)\$(ProjectName)\</IntermediateDirectory>
+    <TargetName>PhantomClient</TargetName>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -43,43 +44,37 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CONSOLE;_WIN64;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;_WIN64;</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)PhantomInjector.exe</OutputFile>
+      <OutputFile>$(OutDir)PhantomClient.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <ImportLibrary>$(OutDir)PhantomClient.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_CONSOLE;_WIN64;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;_WIN64;</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)PhantomInjector.exe</OutputFile>
+      <OutputFile>$(OutDir)PhantomClient.dll</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(OutDir)PhantomClient.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="pe.cpp" />
+    <ClCompile Include="client.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="injector.h" />
-    <ClInclude Include="pe.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shared\protocol.h" />
+    <ClInclude Include="client.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

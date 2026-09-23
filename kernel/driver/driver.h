@@ -2,7 +2,7 @@
 #define PHANTOM_DRIVER_H
 
 #include <ntddk.h>
-#include "../shared/protocol.h"
+#include "../../shared/protocol.h"
 
 #define DRIVER_POOL_TAG 'PmhP'
 #define DRIVER_DEVICE_NAME L"\\Device\\PhantomInject"
