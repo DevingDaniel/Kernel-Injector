@@ -1,0 +1,26 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.pdb
+*.ilk
+*.log
+*.vspscc
+*.vssscc
+*.dbmdl
+*.dbproj.schemaview
+
+# Build outputs
+*.exe
+*.dll
+*.sys
+*.lib
+*.exp
+
+# OS files
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/

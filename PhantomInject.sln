@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhantomInjector", "injector\PhantomInjector.vcxproj", "{A1B2C3D4-1234-5678-9ABC-DEF012345678}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhantomClient", "client\PhantomClient.vcxproj", "{B2C3D4E5-2345-6789-0BCD-EF0123456789}"
+EndProject
+Project("{66A26720-8FB5-11D2-96CE-00C04F79EE80}") = "Phantom", "driver\Phantom.vcxproj", "{C3D4E5F6-3456-7890-1CDE-F01234567890}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1B2C3D4-1234-5678-9ABC-DEF012345678}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B2C3D4-1234-5678-9ABC-DEF012345678}.Debug|x64.Build.0 = Debug|x64
+		{A1B2C3D4-1234-5678-9ABC-DEF012345678}.Release|x64.ActiveCfg = Release|x64
+		{A1B2C3D4-1234-5678-9ABC-DEF012345678}.Release|x64.Build.0 = Release|x64
+		{B2C3D4E5-2345-6789-0BCD-EF0123456789}.Debug|x64.ActiveCfg = Debug|x64
+		{B2C3D4E5-2345-6789-0BCD-EF0123456789}.Debug|x64.Build.0 = Debug|x64
+		{B2C3D4E5-2345-6789-0BCD-EF0123456789}.Release|x64.ActiveCfg = Release|x64
+		{B2C3D4E5-2345-6789-0BCD-EF0123456789}.Release|x64.Build.0 = Release|x64
+		{C3D4E5F6-3456-7890-1CDE-F01234567890}.Debug|x64.ActiveCfg = Debug|x64
+		{C3D4E5F6-3456-7890-1CDE-F01234567890}.Debug|x64.Build.0 = Debug|x64
+		{C3D4E5F6-3456-7890-1CDE-F01234567890}.Release|x64.ActiveCfg = Release|x64
+		{C3D4E5F6-3456-7890-1CDE-F01234567890}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+EndGlobal
