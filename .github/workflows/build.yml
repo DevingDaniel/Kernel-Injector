@@ -12,10 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install WDK
-        uses: windows-drivers/install-wdk@v1
-        with:
-          wdk-version: 10.0.22621.0
+      - name: Setup VS build environment
+        shell: cmd
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath > vs_path.txt
+          set /p VS_PATH=<vs_path.txt
+          call "%VS_PATH%\Common7\Tools\vsdevcmd.bat" -arch=x64 -host_logger_id=0
+          dir "C:\Program Files (x86)\Windows Kits\10\Include" /b
+          if exist "C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\km\ntddk.h" (
+            echo WDK headers found
+          ) else (
+            echo WDK headers NOT found, searching...
+            dir "C:\Program Files (x86)\Windows Kits\10" /s /b ntddk.h 2>nul
+          )
       
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
