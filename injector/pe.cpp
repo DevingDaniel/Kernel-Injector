@@ -1,4 +1,6 @@
 #include "pe.h"
+#include <windows.h>
+#include <winternl.h>
 #include <iostream>
 
 namespace PE {
