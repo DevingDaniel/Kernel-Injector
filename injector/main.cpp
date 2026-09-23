@@ -8,6 +8,10 @@
 #include "injector.h"
 #include "pe.h"
 
+#ifndef NT_SUCCESS
+#define NT_SUCCESS(Status) ((NTSTATUS)(Status) >= 0)
+#endif
+
 DWORD FindProcessId(const std::wstring& ProcessName) {
     HANDLE Snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (Snapshot == INVALID_HANDLE_VALUE) {
@@ -59,17 +63,17 @@ std::string ReadFile(const std::wstring& Path) {
 std::vector<uint8_t> GenerateShellcode(uintptr_t DllMain, uintptr_t ModuleBase, DWORD Reason) {
     std::vector<uint8_t> Shellcode;
 
-    Shellcode.push_back(0x48, 0x83, 0xEC, 0x28);
-    Shellcode.push_back(0x48, 0xB9);
+    Shellcode.insert(Shellcode.end(), {0x48, 0x83, 0xEC, 0x28});
+    Shellcode.insert(Shellcode.end(), {0x48, 0xB9});
     *reinterpret_cast<uintptr_t*>(Shellcode.data() + 6) = ModuleBase;
-    Shellcode.push_back(0x48, 0xC7, 0xC2);
+    Shellcode.insert(Shellcode.end(), {0x48, 0xC7, 0xC2});
     *reinterpret_cast<uint32_t*>(Shellcode.data() + 16) = Reason;
-    Shellcode.push_back(0x4D, 0x31, 0xC0);
-    Shellcode.push_back(0x48, 0xB8);
+    Shellcode.insert(Shellcode.end(), {0x4D, 0x31, 0xC0});
+    Shellcode.insert(Shellcode.end(), {0x48, 0xB8});
     *reinterpret_cast<uintptr_t*>(Shellcode.data() + 24) = DllMain;
-    Shellcode.push_back(0xFF, 0xD0);
-    Shellcode.push_back(0x48, 0x83, 0xC4, 0x28);
-    Shellcode.push_back(0xC3);
+    Shellcode.insert(Shellcode.end(), {0xFF, 0xD0});
+    Shellcode.insert(Shellcode.end(), {0x48, 0x83, 0xC4, 0x28});
+    Shellcode.insert(Shellcode.end(), {0xC3});
 
     return Shellcode;
 }
@@ -138,8 +142,7 @@ bool PhantomInjector::FindTargetProcess(const std::wstring& ProcessName) {
     }
 
     m_TargetPid = Response.ProcessId;
-    std::cout << "[+] Found " << std::wstring(ProcessName.begin(), ProcessName.end())
-              << " with PID: " << m_TargetPid << "\n";
+    std::wcout << L"[+] Found cs2.exe with PID: " << m_TargetPid << L"\n";
     return true;
 }
 
@@ -357,9 +360,9 @@ bool PhantomInjector::Inject(const std::wstring& DllPath) {
         return false;
     }
 
-    std::vector<uint8_t> ImageData;
+    std::vector<uint8_t> ImageData = DllData;
     uintptr_t ImageBase = 0;
-    if (!PrepareImage(DllData, ImageData, ImageBase)) {
+    if (!PrepareImage(ImageData, ImageBase)) {
         return false;
     }
 
